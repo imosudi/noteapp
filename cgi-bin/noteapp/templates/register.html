@@ -1,0 +1,76 @@
+
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}  
+{% from "_formhelpers.html" import render_field %}
+
+<!--form class="form form-horizontal" method=post role="form">
+  <!-dl->
+
+    <div class="form-group">
+    {{ render_field(form.username, class="col-md-6 form-control" ) }}
+</div>    <div class="form-group">
+    {{ render_field(form.email, class="col-md-6 form-control") }}
+</div>    <div class="form-group">
+    {{ render_field(form.password, class="form-control col-md-5") }}
+</div>    <div class="form-group">
+    {{ render_field(form.confirm, class="form-control col-md-4") }}
+</div>    <div class="form-group">
+    {{ render_field(form.accept_tos) }}
+</div>
+  </dl->
+  <p><input  class="btn btn-primary" type=submit value=Register>
+</form-->
+
+<!--form  action="/notes/create" method="POST">
+	<div class="row">    <label class="btn btn-lg btn-primary">Title</label>
+    <input type="text" name="title">
+
+    <label class="btn btn-lg btn-primary" >Body</label>
+    <input type="text" name="body">
+
+    <input class="btn btn-lg btn-primary" role="button" type="submit" value="Create">
+</form-->
+<!--
+            <div id="messages" class="hide" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <div id="messages_content"></div>
+            </div>
+-->
+
+<!--form id="noteForm" action="/notes/create" method="POST" onSubmit="alert('Your note has been created.');">
+  <fieldset>
+    <legend class="text-success" style="font-family: 'Raleway', sans-serif;">Create account</legend>
+    <div class="form-group">
+	 <input class="form-control" id="username" name="username" aria-describedby="titlelHelp" placeholder="Username" type="text" maxlength="50" required >
+      <small id="titleHelp" class="form-text text-muted">Make your title brief, then you can provide the note body below.</small>
+    </div>
+
+    <div class="form-group">
+         <input class="form-control" id="password" name="password" aria-describedby="titlelHelp" placeholder="Password" type="password" maxlength="50" required >
+    </div>    
+    <div class="form-group">
+         <input class="form-control" id="password" name="password" aria-describedby="titlelHelp" placeholder="Password" type="password" maxlength="50" required >
+    </div> 
+
+<div class="form-group">
+      <textarea class="form-control" id="body" name="body" rows="7" maxlength="600" required > </textarea> 
+    </div>
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </fieldset>
+</form>
+<div id="submitNotice"></div-->
+
+<!--        <script>
+            $('#noteForm').submit(function(e) {
+                $('#messages').removeClass('hide').addClass('alert alert-success alert-dismissible').slideDown().show();
+                $('#messages_content').html('<h4>MESSAGE HERE</h4>');
+                $('#modal').modal('show');
+                e.preventDefault();
+            });
+        </script>
+-->  
+{{ wtf.quick_form(form2) }}
+{% endblock %}
+
+

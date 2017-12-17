@@ -1,0 +1,29 @@
+
+{% extends "base.html" %}
+{% block page_content %}  
+
+<!--form  action="/notes/create" method="POST">
+</form-->
+<div class=" border border-success">
+		
+
+<div class="container container-fluid"  >
+<div id="map" class="border border-primary rounded" style="height:500px;margin-top: 10px;margin-bottom: 10px;">
+
+<div class="row">
+{% for noted in notes %} 
+
+                        <div class="col-md-2">{{noted.id}}</div>
+                        <div class="col-md-3">{{noted.title}}</div>
+                        <div class="col-md-7">{{noted.body}}</div>
+               
+{% endfor %}
+</div>
+</div><!--border-primary-->
+</div><!--container-fluid-->
+</div><!--border-success-->
+
+{% endblock %}
+
+
+
