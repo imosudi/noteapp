@@ -2,7 +2,7 @@
 
 from wsgiref.handlers import CGIHandler
 #from myapp import app
-from noteapp.app import *
+from noteapp import *
 
 
 CGIHandler().run(app)
