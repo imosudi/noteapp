@@ -1,0 +1,7 @@
+Options +ExecCGI
+AddHandler cgi-script .cgi .py 
+#AddHandler cgi-script .cgi
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$	/cgi-bin/noteapp/noteapp.cgi/$1 [L]
