@@ -37,6 +37,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'ap
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  
 db = SQLAlchemy(app)  
                      
+"""
+python
+from main import db
+db.create_all()
+
+"""
 
 from models import *
 
