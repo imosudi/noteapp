@@ -39,7 +39,7 @@ db = SQLAlchemy(app)
                      
 """
 python
-from main import db
+from noteapp import db
 db.create_all()
 
 """
