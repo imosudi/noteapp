@@ -5,7 +5,7 @@ sys.path.insert(0, '/var/www/clients/client6/web28/cgi-bin/venv/lib/python2.7/si
 
 
 #import installed library
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, flash, url_for
 from flask_bootstrap import Bootstrap
 from flask_admin import Admin
 from flask_moment import Moment
@@ -13,7 +13,8 @@ from datetime import datetime
 #from flask_script import Manager
 from flask_wtf import FlaskForm
 
-from wtforms import BooleanField, StringField, PasswordField, validators, SubmitField, IntegerField, HiddenField
+
+from wtforms import Form, BooleanField, StringField, PasswordField, validators, SubmitField, IntegerField, HiddenField
 from wtforms.validators import Required
 
 
@@ -71,14 +72,22 @@ def create_note():
 def notes():
     pageName = "/notes"
     notes = Note.query.all()
-    return render_template("notes.html", notes=notes, pageName=pageName, current_time=datetime.utcnow())
+    users = RegistrationForm.query.all()
+    return render_template("notes.html", users=users, notes=notes, pageName=pageName, current_time=datetime.utcnow())
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     pageName= "/register"
-    form = registrationForm()
-    form2 = registrationForm()
-    return render_template('register.html', form=form, form2=form2, pageName=pageName,  current_time=datetime.utcnow())
+    form = registrationForm(request.form)
+    #form2 = registrationForm()
+    #if form.method == 'POST' and  form.validate_on_submit():
+    if request.method == 'POST' and  form.validate():
+        user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
+               form.password.data)
+        db.session.add(user)
+        flash('Thanks for registering')
+        #return redirect(url_for('notes'))
+    return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
 
 
 
