@@ -114,15 +114,16 @@ def register():
 	#Close connection
 	cur.close()
 
-	flash("Registraion Complete")
+	flash("Registration Complete, you may proceed to login")
 
-	redirect(url_for('home'))
+	return redirect(url_for('home'))
         """user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
                form.password.data)
         db.session.add(user)
         flash('Thanks for registering')
         #return redirect(url_for('notes'))"""
-    return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
+    else:
+	return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
 
 
 
