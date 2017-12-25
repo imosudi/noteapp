@@ -13,10 +13,11 @@ from datetime import datetime
 #from flask_script import Manager
 from flask_wtf import FlaskForm
 
-
+#Import 3rd Party
+from flask_mysqldb import MySQL
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, SubmitField, IntegerField, HiddenField
 from wtforms.validators import Required
-
+from passlib.hash import sha256_crypt
 
 
 #Third party imports
@@ -26,17 +27,31 @@ from flask_sqlalchemy import SQLAlchemy
 #Create application
 app = Flask(__name__)  
 app.config['SECRET_KEY'] = 'This is really hard to guess string'  
-  
+
+# init Flask Bootstrap  
 bootstrap = Bootstrap(app)  
 moment = Moment(app)  
-admin = Admin(app)  
+admin = Admin(app)
+
+  
 #manager = Manager(app)  
 
 #SQLITE SQLALCHEMY
 basedir = os.path.abspath(os.path.dirname(__file__))  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  
-db = SQLAlchemy(app)  
+db = SQLAlchemy(app) 
+
+#Config MySQL
+app.config['MYSQL_HOST'] = 'localhost' 
+app.config['MYSQL_USER'] = 'c6noteapp' 
+app.config['MYSQL_PASSWORD'] = 'imosudi@gmail.com' 
+app.config['MYSQL_DB'] = 'c6noteapp'
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+# init MySQL  
+mysql = MySQL(app)
+
                      
 """
 python
@@ -82,11 +97,31 @@ def register():
     #form2 = registrationForm()
     #if form.method == 'POST' and  form.validate_on_submit():
     if request.method == 'POST' and  form.validate():
-        user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
+	name = form.name.data
+	username = form.username.data 
+	email = form.email.data
+	password = sha256_crypt.encrypt(str(form.password.data))
+	
+	# Creating cursor
+	cur = mysql.connection.cursor()
+	
+	cur.execute("INSERT INTO users(name, username, email, password) VALUES(%s,	\
+	 %s, %s,%s)", (name, username, email, password))
+	
+	# Commit to Database
+	mysql.connection.commit()
+
+	#Close connection
+	cur.close()
+
+	flash("Registraion Complete")
+
+	redirect(url_for('home'))
+        """user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
                form.password.data)
         db.session.add(user)
         flash('Thanks for registering')
-        #return redirect(url_for('notes'))
+        #return redirect(url_for('notes'))"""
     return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
 
 
