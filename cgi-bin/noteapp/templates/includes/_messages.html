@@ -5,3 +5,12 @@
     {% endfor %}
   {% endif %}
 {% endwith %}
+
+{% if error %}
+      <div class="text-warning"><p>{{ error }}</p></div>
+{% endif %}
+
+
+{% if msg %}
+      <div class="text-success"><p>{{ msg }}</p></div>
+{% endif %}

@@ -131,7 +131,7 @@ def register():
 def login():
     form = loginForm(request.form)
     pageName = "login"
-    if request.method == 'POST'and  form.validate():
+    if request.method == 'POST': #and  form.validate():
 	"""username = form.username.data 
 	password = sha256_crypt.encrypt(str(form.password.data))"""
 	
@@ -150,16 +150,49 @@ def login():
 	    #Extract hash
 	    data = cur.fetchone()
 	    password = data['password']
+	    name = data['name'] #Fetching Name Details from Database
 
 	    #Compare passwords
 	    if sha256_crypt.verify(password_candidate, password):
-		app.logger.info('PASSWORD MATCHED')
+		#Getting seeion details
+		session['logged_in'] = True		
+		session['username'] = username
+		session['name'] = name
+
+		#app.logger.info('PASSWORD MATCHED')
+		flash(u'Login successful', 'success')
+		return redirect(url_for('dashboard'))
+
 	    else:
-		app.logger.info('PASSWORD NOT MATCHED')
+		#app.logger.info('PASSWORD NOT MATCHED')
+		error = 'Invalid login'
+		return render_template('login.html', pageName=pageName, form=form, current_time=datetime.utcnow(), error=error)
 	else:
-	    app.logger.info('NO USER FOUND')
+	    #app.logger.info('NO USER FOUND')
+	    error = 'Username not found'
+	    return render_template('login.html', pageName=pageName, form=form, current_time=datetime.utcnow(), error=error)
 
     return render_template('login.html', pageName=pageName, form=form, current_time=datetime.utcnow())
+
+# Application Dashboard
+@app.route('/dashboard')
+def dashboard():
+    pageName = "dashboard"
+    return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
+	
+
+# User Dashboard and Session
+@app.route('/<username>/dashboard/')
+def userDashboard(username):
+    pageName = "userDashboard"
+    return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
+	
+# Logout
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash(u"You are now logged out", "success")
+    return redirect(url_for('login')) 
 
 
 
