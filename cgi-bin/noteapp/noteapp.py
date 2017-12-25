@@ -114,7 +114,7 @@ def register():
 	#Close connection
 	cur.close()
 
-	flash("Registration Complete, you may proceed to login")
+	flash(u"Registration Complete, you may proceed to login", "success")
 
 	return redirect(url_for('home'))
         """user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
