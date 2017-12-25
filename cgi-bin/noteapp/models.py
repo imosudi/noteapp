@@ -57,7 +57,7 @@ class registrationForm(Form):
     email = StringField('Email Address', [validators.Length(min=6, max=50)])
     password = PasswordField('New Password', [ 
         validators.DataRequired(), 
-        validators.EqualTo('Confirm', message='Passwords must match')
+        validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
     accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
