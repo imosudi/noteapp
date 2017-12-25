@@ -35,11 +35,12 @@
 
 {# Finally, round things out with navigation #}
 
-	{% include 'includes/_navigationbar.html' %}
+{% include 'includes/_navigationbar.html' %}
 
 {% block content %}
+
 	{% include 'includes/_messages.html' %}
-		{% block page_content %} {% endblock %}
+	{% block page_content %} {% endblock %}
 
 </div>
 <footer class="footer">

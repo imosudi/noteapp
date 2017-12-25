@@ -22,7 +22,7 @@ from passlib.hash import sha256_crypt
 
 #Third party imports
 from flask_sqlalchemy import SQLAlchemy
-
+from functools import wraps
 
 #Create application
 app = Flask(__name__)  
@@ -63,6 +63,17 @@ db.create_all()
 from models import *
 
 
+# Check user login status
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+	if 'logged_in' in session:
+	    return f(*args, **kwargs)
+	else:
+	    flash(u'Unauthorized, Please login', 'danger')
+	    return redirect(url_for('login'))
+    return wrap
+
 
 @app.route("/")
 def home():
@@ -71,6 +82,7 @@ def home():
 
 
 @app.route("/notes/create", methods=["GET", "POST"])  
+@is_logged_in
 def create_note():
     pageName = "/notes/create"
     if request.method == "GET":
@@ -84,6 +96,7 @@ def create_note():
         return redirect("/notes/create", form=form, current_time=datetime.utcnow())
 
 @app.route("/notes", methods=["GET", "POST"])  
+@is_logged_in
 def notes():
     pageName = "/notes"
     notes = Note.query.all()
@@ -176,6 +189,7 @@ def login():
 
 # Application Dashboard
 @app.route('/dashboard')
+@is_logged_in
 def dashboard():
     pageName = "dashboard"
     return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
@@ -183,9 +197,14 @@ def dashboard():
 
 # User Dashboard and Session
 @app.route('/<username>/dashboard/')
+@is_logged_in
 def userDashboard(username):
     pageName = "userDashboard"
     return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
+
+
+
+
 	
 # Logout
 @app.route('/logout')
