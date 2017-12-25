@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+
+{% block page_content %}  
+
+<div class="container content-center">
+
+<div class="jumbotron">
+  <h5 class="display-4 text-primary" style="font-family: 'Indie Flower', cursive;" >Hello, {{ session.name}}!</h5>
+  <p class="lead">This is a simple note taking app, a simple style web application for taking quick notes that needs extra attention.</p>
+  <hr class="my-4">
+ 
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="#" role="button">Explore</a>
+  </p>
+</div>
+
+</div>
+{% endblock %}
