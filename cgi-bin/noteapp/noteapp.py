@@ -129,9 +129,13 @@ def register():
 # User login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    form2 = loginForm(request.form)
+    form = loginForm(request.form)
     pageName = "login"
-    if request.method == 'POST':
+    if request.method == 'POST'and  form.validate():
+	"""username = form.username.data 
+	password = sha256_crypt.encrypt(str(form.password.data))"""
+	
+
 	# login form data
 	username = request.form['username']
 	password_candidate = request.form['password']
@@ -150,10 +154,12 @@ def login():
 	    #Compare passwords
 	    if sha256_crypt.verify(password_candidate, password):
 		app.logger.info('PASSWORD MATCHED')
+	    else:
+		app.logger.info('PASSWORD NOT MATCHED')
 	else:
-	    app.logger.info('NO USER')
+	    app.logger.info('NO USER FOUND')
 
-    return render_template('login.html', pageName=pageName, form2=form2, current_time=datetime.utcnow())
+    return render_template('login.html', pageName=pageName, form=form, current_time=datetime.utcnow())
 
 
 
