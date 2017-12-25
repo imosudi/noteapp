@@ -1,12 +1,16 @@
 {% macro render_field(field) %}
   {#{ field.label }#}
   {#{ field(placeholder=field.label.text) }#}
-  {{ field(**kwargs)|safe }}
+  {#{ field(**kwargs)|safe }#}
+
+{{ field(placeholder=field.label.text, **kwargs)|safe }}
+
   {% if field.errors %}
     {% for error in field.errors %}
       <span class="text-danger">{{ error }}</span>
     {% endfor %}
   {% endif %}
+
 {% endmacro %}
 
 
