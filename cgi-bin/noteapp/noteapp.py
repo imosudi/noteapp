@@ -129,6 +129,8 @@ def register():
 # User login
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    form2 = loginForm(request.form)
+    pageName = "login"
     if request.method == 'POST':
 	# login form data
 	username = request.form['username']
@@ -138,7 +140,7 @@ def login():
 	cur = mysql.connection.cursor()
 
 	# Getting looking up for the user in the database by username
-	result = sur.execute("SELECT * FROM users WHERE username = %s", [username])
+	result = cur.execute("SELECT * FROM users WHERE username = %s", [username])
 
 	if result > 0:
 	    #Extract hash
@@ -151,7 +153,9 @@ def login():
 	else:
 	    app.logger.info('NO USER')
 
-    return render_template('login.html')
+    return render_template('login.html', pageName=pageName, form2=form2, current_time=datetime.utcnow())
+
+
 
 
 if __name__ == "__main__":

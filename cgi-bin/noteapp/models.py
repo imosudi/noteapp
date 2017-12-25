@@ -63,4 +63,9 @@ class registrationForm(Form):
     accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
     #submit = SubmitField('Complete Registeration')
 
+class loginForm(Form):
+    username = StringField('Username', validators=[Required()])
+    password = PasswordField('Login Password', validators=[Required()])
+
+
 
