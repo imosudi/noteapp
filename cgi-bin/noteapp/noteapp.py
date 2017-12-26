@@ -85,15 +85,30 @@ def home():
 @is_logged_in
 def create_note():
     pageName = "/notes/create"
-    if request.method == "GET":
-        return render_template("create_note.html", pageName=pageName, current_time=datetime.utcnow())
+    form = createNoteForm(request.form)
+    if request.method == "POST" and  form.validate():
+	title = form.title.data
+	#notebody = form.notebody.data
+	body = form.body.data
+	# Creating cursor
+	cur = mysql.connection.cursor()
+	
+	cur.execute("INSERT INTO notes(title, body) VALUES(%s,	\
+	  %s)", (title, body))
+	
+	# Commit to Database
+	mysql.connection.commit()
+
+	#Close connection
+	cur.close()
+
+	flash(u"Note created and saved", "success")
+
+	return redirect(url_for('create_note'))
     else:
-        title = request.form["title"]
-        body = request.form["body"]  
-        note = Note(title=title, body=body)
-        db.session.add(note)
-        db.session.commit()
-        return redirect("/notes/create", form=form, current_time=datetime.utcnow())
+        return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
+ 
+
 
 @app.route("/notes", methods=["GET", "POST"])  
 @is_logged_in

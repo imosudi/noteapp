@@ -12,6 +12,7 @@ from flask_wtf import FlaskForm
  
 from wtforms import Form, StringField, SubmitField, IntegerField, HiddenField, validators, BooleanField, PasswordField
 from wtforms.validators import Required
+from wtforms.widgets import TextArea
 
 
 
@@ -67,5 +68,9 @@ class loginForm(Form):
     username = StringField('Username', validators=[Required()])
     password = PasswordField('Login Password', validators=[Required()])
 
-
+class createNoteForm(Form):
+    title = StringField('Title', [validators.Length(min=4, max=12)])
+    #notebody = StringField('Take a note', [validators.Length(min=2, max=250)])
+    body = StringField(u'Take a note', widget=TextArea())
+#CREATE TABLE notes(id INT(11) AUTO_INCREMENT PRIMARY KEY, title VARCHAR(14), notebody TEXT(270), body VARCHAR(270), create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
 
