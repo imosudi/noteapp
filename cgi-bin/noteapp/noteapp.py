@@ -207,7 +207,20 @@ def login():
 @is_logged_in
 def dashboard():
     pageName = "dashboard"
-    return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
+    	# Creating cursor
+	cur = mysql.connection.cursor()
+	
+	result = cur.execute("SELECT * FROM notes)
+	
+	notes = cur.fetchall()
+
+	if result > 0:
+	    return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
+	
+	else:
+	    msg = "No Notes Found"
+	    return render_template('dashboard.html', pageName=pageName, msg=msg current_time=datetime.utcnow())
+    #return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
 	
 
 # User Dashboard and Session
