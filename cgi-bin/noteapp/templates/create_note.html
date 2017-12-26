@@ -20,6 +20,11 @@
 			{{render_field(form.body, class_="form-control", id="noteeditor")}}
 		</div>		
 
+		<div class="form-group">
+			{#{render_field(form.username, class_="form-control" value={{session.username}})}#}
+		</div>	
+
+
 		<p>
 			<button type="submit" class="btn btn-primary">Create note</button>
 		</p>

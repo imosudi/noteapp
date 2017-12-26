@@ -90,11 +90,14 @@ def create_note():
 	title = form.title.data
 	#notebody = form.notebody.data
 	body = form.body.data
+        username = session['username']
+        app.logger.info(username)
+        
+	
 	# Creating cursor
 	cur = mysql.connection.cursor()
 	
-	cur.execute("INSERT INTO notes(title, body) VALUES(%s,	\
-	  %s)", (title, body))
+	cur.execute("INSERT INTO notes(title, body, username) VALUES(%s, %s, %s)", (title, body, username))
 	
 	# Commit to Database
 	mysql.connection.commit()
@@ -104,12 +107,12 @@ def create_note():
 
 	flash(u"Note created and saved", "success")
 
-	return redirect(url_for('create_note'))
+	return redirect(url_for('dashboard'))
     else:
         return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
  
 
-
+"""
 @app.route("/notes", methods=["GET", "POST"])  
 @is_logged_in
 def notes():
@@ -117,6 +120,8 @@ def notes():
     notes = Note.query.all()
     users = RegistrationForm.query.all()
     return render_template("notes.html", users=users, notes=notes, pageName=pageName, current_time=datetime.utcnow())
+"""
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -182,7 +187,7 @@ def login():
 
 	    #Compare passwords
 	    if sha256_crypt.verify(password_candidate, password):
-		#Getting seeion details
+		#Getting session details
 		session['logged_in'] = True		
 		session['username'] = username
 		session['name'] = name
@@ -207,19 +212,26 @@ def login():
 @is_logged_in
 def dashboard():
     pageName = "dashboard"
-    	# Creating cursor
-	cur = mysql.connection.cursor()
-	
-	result = cur.execute("SELECT * FROM notes)
-	
-	notes = cur.fetchall()
 
-	if result > 0:
-	    return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
+    # Fetching session['username']
+    username = session['username']
+    app.logger.info(username)
+
+
+    # Creating cursor
+    cur = mysql.connection.cursor()
 	
-	else:
-	    msg = "No Notes Found"
-	    return render_template('dashboard.html', pageName=pageName, msg=msg current_time=datetime.utcnow())
+    result = cur.execute("SELECT * FROM notes WHERE username = %s", [username])
+    #result = cur.execute("SELECT * FROM notes ")
+	
+    notes = cur.fetchall()
+
+    if result > 0:
+	return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
+	
+    else:
+	msg = "No Notes Found"
+	return render_template('dashboard.html', pageName=pageName, msg=msg, current_time=datetime.utcnow())
     #return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
 	
 
@@ -228,7 +240,8 @@ def dashboard():
 @is_logged_in
 def userDashboard(username):
     pageName = "userDashboard"
-    return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
+    username = session['username']
+    return render_template('dashboard.html', pageName=pageName, username=username, current_time=datetime.utcnow())
 
 
 

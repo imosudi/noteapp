@@ -15,7 +15,7 @@ from wtforms.validators import Required
 from wtforms.widgets import TextArea
 
 
-
+"""
 class Note(db.Model): 
     id = db.Column(db.Integer, primary_key=True) 
     title = db.Column(db.String(80))
@@ -24,32 +24,6 @@ class Note(db.Model):
     def __init__(self, title, body): 
         self.title = title
         self.body = body
-"""
-class registrationForm(FlaskForm):
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [ 
-        validators.DataRequired(), 
-        validators.EqualTo('confirm', message='Passwords must match')
-    ])
-    confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
-    submit = SubmitField('Complete Registeration')
-
-class RegistrationForm(db.Model):
-    __tablename__ = 'registrationforms'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, index=True)
-    email = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(64))
-    accept_tos = db.Column(db.Boolean)
-
-
-    def __init__(self, username, email, password, accept_tos):
-        self.username = username
-        self.email = email
-        self.password = password
-        self.accept_tos = accept_tos
 """
 
 class registrationForm(Form):
@@ -72,5 +46,6 @@ class createNoteForm(Form):
     title = StringField('Title', [validators.Length(min=4, max=12)])
     #notebody = StringField('Take a note', [validators.Length(min=2, max=250)])
     body = StringField(u'Take a note', widget=TextArea())
+    username = HiddenField('username')
 #CREATE TABLE notes(id INT(11) AUTO_INCREMENT PRIMARY KEY, title VARCHAR(14), notebody TEXT(270), body VARCHAR(270), create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
 
