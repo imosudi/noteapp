@@ -25,34 +25,34 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 
 #Create application
-app = Flask(__name__)  
-app.config['SECRET_KEY'] = 'This is really hard to guess string'  
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'This is really hard to guess string'
 
-# init Flask Bootstrap  
-bootstrap = Bootstrap(app)  
-moment = Moment(app)  
+# init Flask Bootstrap
+bootstrap = Bootstrap(app)
+moment = Moment(app)
 admin = Admin(app)
 
-  
-#manager = Manager(app)  
+
+#manager = Manager(app)
 
 #SQLITE SQLALCHEMY
-basedir = os.path.abspath(os.path.dirname(__file__))  
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')  
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True  
-db = SQLAlchemy(app) 
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
 
 #Config MySQL
-app.config['MYSQL_HOST'] = 'localhost' 
-app.config['MYSQL_USER'] = 'c6noteapp' 
-app.config['MYSQL_PASSWORD'] = 'imosudi@gmail.com' 
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'c6noteapp'
+app.config['MYSQL_PASSWORD'] = 'imosudi@gmail.com'
 app.config['MYSQL_DB'] = 'c6noteapp'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# init MySQL  
+# init MySQL
 mysql = MySQL(app)
 
-                     
+
 """
 python
 from noteapp import db
@@ -78,10 +78,17 @@ def is_logged_in(f):
 @app.route("/")
 def home():
     pageName = "home"
-    return render_template("home.html", pageName=pageName, current_time=datetime.utcnow())
+    old_username = session.get('username')
+    #app.logger.info(old_username)
+    if old_username is None:
+        return render_template("home.html", pageName=pageName, current_time=datetime.utcnow())
+    else:
+        return redirect(url_for('dashboard'))
 
 
-@app.route("/notes/create", methods=["GET", "POST"])  
+
+
+@app.route("/notes/create", methods=["GET", "POST"])
 @is_logged_in
 def create_note():
     pageName = "/notes/create"
@@ -92,13 +99,13 @@ def create_note():
 	body = form.body.data
         username = session['username']
         app.logger.info(username)
-        
-	
+
+
 	# Creating cursor
 	cur = mysql.connection.cursor()
-	
+
 	cur.execute("INSERT INTO notes(title, body, username) VALUES(%s, %s, %s)", (title, body, username))
-	
+
 	# Commit to Database
 	mysql.connection.commit()
 
@@ -110,10 +117,10 @@ def create_note():
 	return redirect(url_for('dashboard'))
     else:
         return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
- 
+
 
 """
-@app.route("/notes", methods=["GET", "POST"])  
+@app.route("/notes", methods=["GET", "POST"])
 @is_logged_in
 def notes():
     pageName = "/notes"
@@ -131,16 +138,16 @@ def register():
     #if form.method == 'POST' and  form.validate_on_submit():
     if request.method == 'POST' and  form.validate():
 	name = form.name.data
-	username = form.username.data 
+	username = form.username.data
 	email = form.email.data
 	password = sha256_crypt.encrypt(str(form.password.data))
-	
+
 	# Creating cursor
 	cur = mysql.connection.cursor()
-	
+
 	cur.execute("INSERT INTO users(name, username, email, password) VALUES(%s,	\
 	 %s, %s,%s)", (name, username, email, password))
-	
+
 	# Commit to Database
 	mysql.connection.commit()
 
@@ -150,7 +157,7 @@ def register():
 	flash(u"Registration Complete, you may proceed to login", "success")
 
 	return redirect(url_for('home'))
-        """user = RegistrationForm(form.user.name, form.username.data, form.email.data, 
+        """user = RegistrationForm(form.user.name, form.username.data, form.email.data,
                form.password.data)
         db.session.add(user)
         flash('Thanks for registering')
@@ -165,9 +172,9 @@ def login():
     form = loginForm(request.form)
     pageName = "login"
     if request.method == 'POST': #and  form.validate():
-	"""username = form.username.data 
+	"""username = form.username.data
 	password = sha256_crypt.encrypt(str(form.password.data))"""
-	
+
 
 	# login form data
 	username = request.form['username']
@@ -188,7 +195,7 @@ def login():
 	    #Compare passwords
 	    if sha256_crypt.verify(password_candidate, password):
 		#Getting session details
-		session['logged_in'] = True		
+		session['logged_in'] = True
 		session['username'] = username
 		session['name'] = name
 
@@ -220,20 +227,20 @@ def dashboard():
 
     # Creating cursor
     cur = mysql.connection.cursor()
-	
+
     result = cur.execute("SELECT * FROM notes WHERE username = %s", [username])
     #result = cur.execute("SELECT * FROM notes ")
-	
+
     notes = cur.fetchall()
 
     if result > 0:
 	return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
-	
+
     else:
 	msg = "No Notes Found"
 	return render_template('dashboard.html', pageName=pageName, msg=msg, current_time=datetime.utcnow())
     #return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
-	
+
 
 # User Dashboard and Session
 @app.route('/<username>/dashboard/')
@@ -246,13 +253,13 @@ def userDashboard(username):
 
 
 
-	
+
 # Logout
 @app.route('/logout')
 def logout():
     session.clear()
     flash(u"You are now logged out", "success")
-    return redirect(url_for('login')) 
+    return redirect(url_for('login'))
 
 
 
@@ -260,6 +267,3 @@ def logout():
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
     #manager.run(
-
-
-

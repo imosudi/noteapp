@@ -24,7 +24,7 @@
 		Register</a>
 		    </li>
 		{% endif %}
-		
+
 		{% if session.logged_in == True %}
 		    <li class="nav-item">
 		        {% if pageName == "/notes/create" %}
@@ -35,7 +35,7 @@
 		CreateNote</a>
 		    </li>
 		{% endif %}
-		
+
 
 		    <!--li class="nav-item">
 			{#% if pageName == "/notes" %#}
@@ -56,7 +56,7 @@
 		About</a>
 		    </li>
 		{% endif %}
-		
+
 		{% if session.logged_in != True %}
 		    <li class="nav-item">
 			{% if pageName == "login" %}

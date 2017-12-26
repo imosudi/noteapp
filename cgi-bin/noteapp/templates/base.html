@@ -8,16 +8,17 @@
           href="{{url_for('static', filename='css/narrow-jumbotron.css')}}">
 
 	<link rel="stylesheet" href="//necolas.github.io/normalize.css/7.0.0/normalize.css">
-	<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:900,900"  rel="stylesheet"> 
-        <link href="https://fonts.googleapis.com/css?family=Cambay" rel="stylesheet">
-        <link rel="stylesheet" type="text/css"  
+	<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:900,900"  rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cambay" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+  <link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/sticky-footer.css')}}">
 
 	<!--link rel="stylesheet" href ="//demos.creative-tim.com/now-ui-kit/assets/css/now-ui-kit.css?v=1.1.0"-->
 
 <style>
-.textContainer { 
-    height: 345px; 
+.textContainer {
+    height: 345px;
     line-height: 340px;
 }
 </style>
@@ -47,10 +48,10 @@ CKEDITOR.replace('noteeditor');
 
 </div>
 <footer class="footer">
-	<div class="container" style="text-align:center;"> 
-		&copy; copyright {{ moment(current_time).format('YYYY') }} 
-		|<a href="mailto:imosudi@gmail.com"> imosudi@gmail.com</a> 
-		|<a href="http://www.mioemi.com"> www.mioemi.com</a> 
+	<div class="container" style="text-align:center;">
+		&copy; copyright {{ moment(current_time).format('YYYY') }}
+		|<a href="mailto:imosudi@gmail.com"> imosudi@gmail.com</a>
+		|<a href="http://www.mioemi.com"> www.mioemi.com</a>
 	</div>
 </footer>
 {% endblock %}
