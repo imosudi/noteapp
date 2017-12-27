@@ -29,7 +29,10 @@
 <script src="{{url_for('static', filename='js/jquery-3.2.1.min.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
-<script src="//cdn.ckeditor.com/4.8.0/basic/ckeditor.js"></script>
+<!--Basic CKEDITOR-->
+<!--script src="//cdn.ckeditor.com/4.8.0/basic/ckeditor.js"--></script>
+<!---Standard CKEDITOR-->
+<script src="//cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script type="text/javascript">
 CKEDITOR.replace('noteeditor');
 </script>
@@ -39,11 +42,38 @@ function clearnoteeditor() {
 CKEDITOR.instances.noteeditor.setData(" ");
 }
 </script>
+
+
 <script>
-function ClearFields() {
-     document.getElementById("noteeditor").value = "";
+
+function textcounter() {
+	var charCount = CKEDITOR.instances.noteeditor.getData();
+	var notelength = (charCount.length);
+	/*alert(charCount);
+	alert(notelength);*/
+   document.getElementById('charcount').value = notelength;
+	 document.getElementById('charcount2').value = notelength;
+
 }
 </script>
+
+<!--script>
+function noshow() {
+//var charcount3 = document.getElementById("charCount");
+		var charcount3 = CKEDITOR.instances.noteeditor.getData();
+		var notelength = (charcount3.length);
+		document.getElementById('charcount4').value = notelength;
+
+/*CKEDITOR.instances.editor1.on("key", function (event)
+{
+        charCount.innerHTML = CKEDITOR.instances.editor1.getData().length;
+});
+*/
+}
+</script-->
+
+
+
 
 {{ moment.include_moment() }}
 {% endblock %}

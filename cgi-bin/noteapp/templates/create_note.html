@@ -8,16 +8,11 @@
 	<form method="POST" action="" class="container">
 
 		<div class="form-group">
-			{{render_field(form.title, class_="form-control")}}
+			{{render_field(form.title, class_="form-control col col-lg-3 ", maxlength="12")}}
 		</div>
 
-		<!--div class="form-group">
-			{#{render_field(form.notebody, class_="form-control")}#}
-		</div-->
-
-
 		<div class="form-group">
-			{{render_field(form.body, class_="form-control", id="noteeditor")}}
+			{{render_field(form.body, class_="form-control", id="noteeditor", maxlength="270" )}}
 		</div>
 
 		<div class="form-group">
@@ -27,12 +22,12 @@
 
 		<p>
 			<button type="submit" class="btn btn-primary">Create note</button>
-			 <button type="reset"  onclick="clearnoteeditor();" class="btn btn-danger">Cear note</button>
+			 <button type="reset"  onclick="clearnoteeditor();" class="btn btn-danger">Clear note</button>
+
+
 		</p>
 	</form>
 </div>
-
-
 
 
 <!--form  action="/notes/create" method="POST">
