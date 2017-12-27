@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Simple CRUD App by Mosudi{% endblock %}
+{% block title %}noteApp by imosudi{% endblock %}
 
 {% block styles %}
 	<link rel="stylesheet" type="text/css"
@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="//necolas.github.io/normalize.css/7.0.0/normalize.css">
 	<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:900,900"  rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Cambay" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/sticky-footer.css')}}">
 
@@ -32,6 +32,17 @@
 <script src="//cdn.ckeditor.com/4.8.0/basic/ckeditor.js"></script>
 <script type="text/javascript">
 CKEDITOR.replace('noteeditor');
+</script>
+
+<script type="text/javascript">
+function clearnoteeditor() {
+CKEDITOR.instances.noteeditor.setData(" ");
+}
+</script>
+<script>
+function ClearFields() {
+     document.getElementById("noteeditor").value = "";
+}
 </script>
 
 {{ moment.include_moment() }}

@@ -85,7 +85,11 @@ def home():
     else:
         return redirect(url_for('dashboard'))
 
-
+@app.route('/about')
+def about():
+    pageName = "about"
+    return render_template("about.html", pageName=pageName, current_time=datetime.utcnow())
+    pass
 
 
 @app.route("/notes/create", methods=["GET", "POST"])

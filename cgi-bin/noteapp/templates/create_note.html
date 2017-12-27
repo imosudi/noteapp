@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}
-{% block page_content %}  
+{% block page_content %}
 
 
 <div class="container content-center">
@@ -13,20 +13,21 @@
 
 		<!--div class="form-group">
 			{#{render_field(form.notebody, class_="form-control")}#}
-		</div-->	
+		</div-->
 
 
 		<div class="form-group">
 			{{render_field(form.body, class_="form-control", id="noteeditor")}}
-		</div>		
+		</div>
 
 		<div class="form-group">
 			{#{render_field(form.username, class_="form-control" value={{session.username}})}#}
-		</div>	
+		</div>
 
 
 		<p>
 			<button type="submit" class="btn btn-primary">Create note</button>
+			 <button type="reset"  onclick="clearnoteeditor();" class="btn btn-danger">Cear note</button>
 		</p>
 	</form>
 </div>
@@ -57,10 +58,10 @@
 	 <input class="form-control" id="title" name="title" aria-describedby="titlelHelp" placeholder="Enter Note Title" type="text" maxlength="50" required >
       <small id="titleHelp" class="form-text text-muted">Make your title brief, then you can provide the note body below.</small>
     </div-->
-    
+
 <!--div class="form-group">
       <!-label for="exampleTextarea">Title </label->
-      <textarea class="form-control" id="body" name="body" rows="7" maxlength="600" required > </textarea> 
+      <textarea class="form-control" id="body" name="body" rows="7" maxlength="600" required > </textarea>
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
   </fieldset>
@@ -79,5 +80,3 @@
 
 
 {% endblock %}
-
-
