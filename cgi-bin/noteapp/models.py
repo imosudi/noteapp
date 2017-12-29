@@ -47,3 +47,8 @@ class createNoteForm(Form):
     body = StringField(u'Take a note', widget=TextArea())
     username = HiddenField('username')
 #CREATE TABLE notes(id INT(11) AUTO_INCREMENT PRIMARY KEY, title VARCHAR(14), body VARCHAR(270), create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+
+class editNoteForm(Form):
+    title = StringField('Title', [validators.Length(min=4, max=12)])
+    body = StringField(u'Take a note', widget=TextArea())
+    username = HiddenField('username')

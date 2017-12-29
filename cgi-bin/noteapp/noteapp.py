@@ -105,14 +105,45 @@ def create_note():
         app.logger.info(username)
 
 
-# Edite notes
-@app.route("/notes/edit", methods=["GET", "POST"])
+# Edit notes
+@app.route("/notes/edit/<string:id>", methods=["GET", "POST"])
 @is_logged_in
-def create_edit():
+def note_edit(id):
     pageName = "/notes/edit"
     username = session['username']
-    app.logger.info(username)
-    return render_template("edit_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
+    form = editNoteForm(request.form)
+    app.logger.info(id)
+
+
+
+
+
+
+
+
+    cur = mysql.connection.cursor()
+
+    #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
+
+    cur.execute("SELECT * FROM notes WHERE id = %s", [id] )
+
+    note = cur.fetchall()
+
+    app.logger.info(note)
+
+	# Commit to Database
+    mysql.connection.commit()
+
+    #Close connection
+    cur.close()
+
+    #app.logger.info(username)
+
+    #title = note['title']
+    #body = note['body']
+
+
+    return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
     """
     form = createNoteForm(request.form)
     if request.method == "POST" and  form.validate():
@@ -255,12 +286,13 @@ def dashboard():
 
     notes = cur.fetchall()
 
+
     if result > 0:
-	return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
+        return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
 
     else:
-	msg = "No Notes Found"
-	return render_template('dashboard.html', pageName=pageName, msg=msg, current_time=datetime.utcnow())
+        msg = "No Notes Found"
+        return render_template('dashboard.html', pageName=pageName, msg=msg, current_time=datetime.utcnow())
     #return render_template('dashboard.html', pageName=pageName, current_time=datetime.utcnow())
 
 
