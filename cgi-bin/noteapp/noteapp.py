@@ -132,36 +132,56 @@ def note_edit(id):
     form = editNoteForm(request.form)
     app.logger.info(id)
 
+    if request.method == "POST" and  form.validate():
+        title = form.title.data
+        body = form.body.data
+        username = session['username']
+
+        # Creating cursor
+    	cur = mysql.connection.cursor()
+
+    	cur.execute("UPDATE notes SET title=%s, body=%s, username=%s WHERE id = %s", (title, body, username, [id]) )
+
+    	# Commit to Database
+    	mysql.connection.commit()
+
+    	#Close connection
+    	cur.close()
+
+    	flash(u"Note edited and saved", "success")
+
+    	return redirect(url_for('dashboard'))
+
+    else:
+        # Creating cursor
+        cur = mysql.connection.cursor()
+
+        cur = mysql.connection.cursor()
+
+        #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
+
+        cur.execute("SELECT * FROM notes WHERE id = %s", [id] )
+
+        note = cur.fetchall()
+
+        app.logger.info(note)
+
+        # Commit to Database
+        mysql.connection.commit()
+
+        #Close connection
+        cur.close()
+
+        #app.logger.info(username)
+
+        #title = note['title']
+        #body = note['body']
+
+        return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
 
 
 
 
-
-
-
-    cur = mysql.connection.cursor()
-
-    #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
-
-    cur.execute("SELECT * FROM notes WHERE id = %s", [id] )
-
-    note = cur.fetchall()
-
-    app.logger.info(note)
-
-	# Commit to Database
-    mysql.connection.commit()
-
-    #Close connection
-    cur.close()
-
-    #app.logger.info(username)
-
-    #title = note['title']
-    #body = note['body']
-
-
-    return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
     """
     form = createNoteForm(request.form)
     if request.method == "POST" and  form.validate():
