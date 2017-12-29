@@ -98,11 +98,29 @@ def create_note():
     pageName = "/notes/create"
     form = createNoteForm(request.form)
     if request.method == "POST" and  form.validate():
-	title = form.title.data
-	#notebody = form.notebody.data
-	body = form.body.data
+    	title = form.title.data
+    	#notebody = form.notebody.data
+    	body = form.body.data
         username = session['username']
         app.logger.info(username)
+
+    	# Creating cursor
+    	cur = mysql.connection.cursor()
+
+    	cur.execute("INSERT INTO notes(title, body, username) VALUES(%s, %s, %s)", (title, body, username))
+
+    	# Commit to Database
+    	mysql.connection.commit()
+
+    	#Close connection
+    	cur.close()
+
+    	flash(u"Note created and saved", "success")
+
+    	return redirect(url_for('dashboard'))
+    else:
+        return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
+
 
 
 # Edit notes

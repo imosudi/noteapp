@@ -14,37 +14,42 @@
 		</div>
 
 		<div class="form-group">
-			{{render_field(form.body, class_="form-control", id="editnoteeditor", maxlength="270" )}}
+			{{render_field(form.body, class_="form-control", id="noteeditor", maxlength="270" )}}
 		</div>
-    <script>
-    function loadnoteeditor() {
-      alert("MOsudiIsiaka")
-      var notebody = {{ item.body |safe }};
-      alert(notebody);
-      CKEDITOR.instances.editnoteeditor.setData(notebody);
-    }
-    window.onload = loadnoteeditor;
-
-    </script>
 
     <script>
 window.onload = function WindowLoad(event)
 {
     //alert("Page is loaded");
-    var notebody = "{{ item.body |safe }}";
-    alert(notebody);
-    alert("{{item.body}}");
+    var notebody = "{{ item.body }}";
+    //alert(notebody);
+    //alert("{{item.body}}");
+
+    function escapeHtml(notebody) {
+            var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+            };
+
+            return notebody.replace(/[&<>"']/g, function(m) { return map[m]; });
+            }
+
+
+    CKEDITOR.instances.noteeditor.setData(notebody);
+
 }
     </script>
 
 		<div class="form-group">
 			{#{render_field(form.username, class_="form-control" value={{session.username}})}#}
 		</div>
-<h1>{{item.body|safe}}</h1>
 
 		<p>
-			<button type="submit" class="btn btn-primary">Create note</button>
-			 <button type="reset"  onclick="clearnoteeditor();" class="btn btn-danger">Clear note</button>
+			<button type="submit" class="btn btn-primary">Save note</button>
+			 <button type="reset"  onclick="noteeditor();" class="btn btn-danger">Clear note</button>
 
 
 		</p>
