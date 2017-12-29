@@ -105,6 +105,23 @@ def create_note():
         app.logger.info(username)
 
 
+# Edite notes
+@app.route("/notes/edit", methods=["GET", "POST"])
+@is_logged_in
+def create_edit():
+    pageName = "/notes/edit"
+    username = session['username']
+    app.logger.info(username)
+    return render_template("edit_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
+    """
+    form = createNoteForm(request.form)
+    if request.method == "POST" and  form.validate():
+	title = form.title.data
+	#notebody = form.notebody.data
+	body = form.body.data
+        username = session['username']
+        app.logger.info(username)
+
 	# Creating cursor
 	cur = mysql.connection.cursor()
 
@@ -121,6 +138,7 @@ def create_note():
 	return redirect(url_for('dashboard'))
     else:
         return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
+    """
 
 
 """
