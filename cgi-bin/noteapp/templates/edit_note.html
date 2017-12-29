@@ -21,25 +21,19 @@
 window.onload = function WindowLoad(event)
 {
     //alert("Page is loaded");
-    var notebody = "{{ item.body }}";
+    var notebody = "{{ item.body|safe }}";
     //alert(notebody);
     //alert("{{item.body}}");
-
     function escapeHtml(notebody) {
-            var map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-            };
-
-            return notebody.replace(/[&<>"']/g, function(m) { return map[m]; });
-            }
-
-
-    CKEDITOR.instances.noteeditor.setData(notebody);
-
+        return notebody
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+                }
+                //alert(notebody);
+                CKEDITOR.instances.noteeditor.setData(notebody);
 }
     </script>
 
