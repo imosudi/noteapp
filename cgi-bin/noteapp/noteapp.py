@@ -36,11 +36,6 @@ admin = Admin(app)
 
 #manager = Manager(app)
 
-#SQLITE SQLALCHEMY
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(app)
 
 #Config MySQL
 app.config['MYSQL_HOST'] = 'localhost'
@@ -179,45 +174,14 @@ def note_edit(id):
 
         return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
 
-
-
-
     """
     form = createNoteForm(request.form)
-    if request.method == "POST" and  form.validate():
-	title = form.title.data
-	#notebody = form.notebody.data
-	body = form.body.data
-        username = session['username']
-        app.logger.info(username)
-
-	# Creating cursor
-	cur = mysql.connection.cursor()
-
-	cur.execute("INSERT INTO notes(title, body, username) VALUES(%s, %s, %s)", (title, body, username))
-
-	# Commit to Database
-	mysql.connection.commit()
-
-	#Close connection
-	cur.close()
-
-	flash(u"Note created and saved", "success")
-
-	return redirect(url_for('dashboard'))
-    else:
-        return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
     """
 
 
 """
 @app.route("/notes", methods=["GET", "POST"])
 @is_logged_in
-def notes():
-    pageName = "/notes"
-    notes = Note.query.all()
-    users = RegistrationForm.query.all()
-    return render_template("notes.html", users=users, notes=notes, pageName=pageName, current_time=datetime.utcnow())
 """
 
 
@@ -228,33 +192,29 @@ def register():
     #form2 = registrationForm()
     #if form.method == 'POST' and  form.validate_on_submit():
     if request.method == 'POST' and  form.validate():
-	name = form.name.data
-	username = form.username.data
-	email = form.email.data
-	password = sha256_crypt.encrypt(str(form.password.data))
+        name = form.name.data
+        username = form.username.data
+        email = form.email.data
+        password = sha256_crypt.encrypt(str(form.password.data))
 
-	# Creating cursor
-	cur = mysql.connection.cursor()
+        # Creating cursor
+        cur = mysql.connection.cursor()
 
-	cur.execute("INSERT INTO users(name, username, email, password) VALUES(%s,	\
+        cur.execute("INSERT INTO users(name, username, email, password) VALUES(%s,	\
 	 %s, %s,%s)", (name, username, email, password))
 
-	# Commit to Database
-	mysql.connection.commit()
+	    # Commit to Database
+        mysql.connection.commit()
 
-	#Close connection
-	cur.close()
+        #Close connection
+        cur.close()
 
-	flash(u"Registration Complete, you may proceed to login", "success")
+        flash(u"Registration Complete, you may proceed to login", "success")
 
-	return redirect(url_for('home'))
-        """user = RegistrationForm(form.user.name, form.username.data, form.email.data,
-               form.password.data)
-        db.session.add(user)
-        flash('Thanks for registering')
-        #return redirect(url_for('notes'))"""
+        return redirect(url_for('home'))
+
     else:
-	return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
+        return render_template('register.html', form=form, pageName=pageName,  current_time=datetime.utcnow())
 
 
 # User login
@@ -343,9 +303,6 @@ def userDashboard(username):
     return render_template('dashboard.html', pageName=pageName, username=username, current_time=datetime.utcnow())
 
 
-
-
-
 # Logout
 @app.route('/logout')
 def logout():
@@ -358,4 +315,4 @@ def logout():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
-    #manager.run(
+    #manager.run()

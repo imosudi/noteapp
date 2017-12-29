@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, '/var/www/clients/client6/web28/cgi-bin/venv/lib/python2.7/site-packages')
 
 #Import from noteapp.py
-from noteapp import db
+#from noteapp import db
 
 
 #import installed library
