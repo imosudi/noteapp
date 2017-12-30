@@ -17,17 +17,19 @@
 	    <h4 class="card-title text-success text-capitalize"> {{ note.title }} </h4>
 	    <p class="card-text" style="font-family: 'Lato', sans-serif;">{{ note.body|safe }}</p>
 		<small> Written by {{ note.username }} on {{note.create_date}} with id: {{ note.id }} </small>
+    <p>
     <ul class="nav nav-pills float-right">
       <li class="nav-item"> <a href="/notes/edit/{{ note.id }}"
         type="button" class="btn btn-outline-primary"> Edit </a>
       </li>
       <li class="nav-item">
         <form  action="{{ url_for('note_delete', id=note.id )}}" method="post">
-          <input type="hidden" name="note_id" value="{{note.id}}">
+          <input type="hidden" name="" value="{{note}}">
           <input type="submit" class="btn btn-danger " value="delete">
         </form>
       </li>
     </ul>
+  </p>
 	  </div>
 	</div>
   <br>
