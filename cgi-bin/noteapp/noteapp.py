@@ -136,6 +136,7 @@ def note_edit(id):
     	cur = mysql.connection.cursor()
 
     	cur.execute("UPDATE notes SET title=%s, body=%s, username=%s WHERE id = %s", (title, body, username, [id]) )
+        # I will remove the username because there is not need updating the username
 
     	# Commit to Database
     	mysql.connection.commit()
@@ -149,8 +150,6 @@ def note_edit(id):
 
     else:
         # Creating cursor
-        cur = mysql.connection.cursor()
-
         cur = mysql.connection.cursor()
 
         #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
@@ -177,6 +176,33 @@ def note_edit(id):
     """
     form = createNoteForm(request.form)
     """
+
+@app.route("/notes/delete/<string:id>", methods=['GET', 'POST'])
+@is_logged_in
+def note_delete(id):
+    pageName = "/notes/delete"
+    username = session['username']
+    form = deleteNoteForm(request.form)
+    note_id = form.note_id.data
+    app.logger.info(note_id)
+    app.logger.info(id)
+    if id == note_id:
+        cur = mysql.connection.cursor()
+
+        cur.execute("DELETE FROM notes WHERE id=%s", [id])
+
+	    # Commit to Database
+        mysql.connection.commit()
+
+        #Close connection
+        cur.close()
+
+        flash(u"Note Deleted !", "success")
+
+        return redirect(url_for('home'))
+
+    return redirect(url_for('home'))
+
 
 
 """
