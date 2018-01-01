@@ -135,14 +135,15 @@ def note_edit(id):
     username = session['username']
     if request.referrer != None:
         referrerurl = '/' + str((request.referrer).split('/')[-1])
+        noteurl = '/' + str((request.referrer).split('/')[-1])
     else:
         flash(u"There is no need to be that smart!", "warning")
         return redirect(url_for('home'))
     app.logger.info(request.referrer)
     app.logger.info(referrerurl)
-    app.logger.info(url_for('dashboard'))
+    app.logger.info(noteurl)
     app.logger.info(url_for('home'))
-    if referrerurl == url_for('dashboard') or request.referrer == url_for('dashboard') :
+    if referrerurl == noteurl or request.referrer == url_for('dashboard') :
         app.logger.info('real request made')
         form = editNoteForm(request.form)
         #note_id = session['note_id']
