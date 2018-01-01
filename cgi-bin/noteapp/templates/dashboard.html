@@ -18,7 +18,7 @@
   <!--hr class="my-4"-->
  </div>
 
-{% for note in notes %}
+{% for note in notes| sort(attribute='id', reverse = True)  %}
 	<div class="card rounded">
 	  <div class="card-body">
 	    <h4 class="card-title text-success text-capitalize"> {{ note.title }} </h4>

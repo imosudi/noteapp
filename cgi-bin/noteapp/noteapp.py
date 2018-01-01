@@ -142,7 +142,7 @@ def note_edit(id):
     app.logger.info(referrerurl)
     app.logger.info(url_for('dashboard'))
     app.logger.info(url_for('home'))
-    if referrerurl == url_for('dashboard'):
+    if referrerurl == url_for('dashboard') or request.referrer == url_for('dashboard') :
         app.logger.info('real request made')
         form = editNoteForm(request.form)
         #note_id = session['note_id']
@@ -204,7 +204,7 @@ def note_edit(id):
 
     else:
         flash(u"Note edited impossible", "warning")
-        return redirect(url_for(dashboard))
+        return redirect(url_for('dashboard'))
     """
     form = createNoteForm(request.form)
     """
