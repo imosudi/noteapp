@@ -10,8 +10,10 @@
   padding-right: 5px;
   padding-bottom: 5px;
   border:round;
-  border-radius:55px;">
-  <h3 class="display-5 text-primary" style="font-family: 'Roboto', sans-serif;text-transform: capitalize;" >Hi, {{ session.name}}!</h5>
+  border-radius:5px;">
+  <h3 class="display-5 text-primary" style="font-family: 'Roboto', sans-serif;text-transform: capitalize;" >
+    Hi, {{ session.name}}!
+  </h3>
   <p class="lead">This is a simple note taking app, a simple style web application for taking quick notes that needs extra attention.</p>
   <!--hr class="my-4"-->
  </div>
@@ -24,20 +26,24 @@
 		<small> Written by {{ note.username }} on {{note.create_date}} with id: {{ note.id }} </small>
     <p>
     <ul class="nav nav-pills float-right">
-      <li class="nav-item"> <a href="/notes/edit/{{ note.id }}"
-        type="button" class="btn btn-outline-primary"> Edit </a>
+      <li class="nav-item">
+        <form  action="{{ url_for('note_preedit', id=note.id )}}" method="post">
+          <input type="hidden" name="note_id" value="{{note.id}}">
+          <input type="submit" class="btn btn-primary " value="Edit">
+        </form>
+         <!--a href="/notes/edit/{{ note.id }}"
+        type="button" class="btn btn-outline-primary"> Edit </a-->
       </li>
       <li class="nav-item">
         <form  action="{{ url_for('note_delete', id=note.id )}}" method="post">
-          <input type="hidden" name="" value="{{note}}">
-          <input type="submit" class="btn btn-danger " value="delete">
+          <input type="hidden" name="note_id" value="{{note.id}}">
+          <input type="submit" class="btn btn-danger " value="Delete">
         </form>
       </li>
     </ul>
   </p>
 	  </div>
 	</div>
-  <br>
 {% endfor %}
 
 </div>

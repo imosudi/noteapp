@@ -37,12 +37,33 @@ window.onload = function WindowLoad(event)
 }
     </script>
 
+		<script>
+		/**
+		window.onsubmit = function WindowLoad(event)
+		{
+		var notebody = CKEDITOR.instances.noteeditor.getData();
+		function formatnoteeditor(notebody) {
+			return notebody
+							.replace(/"&amp;"/g, & )
+							.replace(/"&lt;"/g, < )
+							.replace(/"&gt;"/g,  > )
+							.replace(/"&quot;"/g,  '"')
+							.replace(/"&#039;"/g, "'");
+							}
+		CKEDITOR.instances.noteeditor.setData(notebody);
+		alert(notebody);
+	}
+	**/
+		</script>
+
+
+
 		<div class="form-group">
-			{#{render_field(form.username, class_="form-control" value={{session.username}})}#}
+			{{render_field(form.author, class_="form-control", value=item.username)}}
 		</div>
 
 		<p>
-			<button type="submit" class="btn btn-primary">Save note</button>
+			<button type="submit" onsubmit="formatnoteeditor()" class="btn btn-primary">Save note</button>
 			<button type="reset"  onclick="clearnoteeditor();" class="btn btn-danger">Clear note</button>
 
 

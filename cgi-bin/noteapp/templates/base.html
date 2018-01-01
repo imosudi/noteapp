@@ -4,14 +4,20 @@
 {% block styles %}
 	<link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-        <link rel="stylesheet" type="text/css"
+  <link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/narrow-jumbotron.css')}}">
-<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/navbar-top-fixed/navbar-top-fixed.css">
-	<link rel="stylesheet" href="//necolas.github.io/normalize.css/7.0.0/normalize.css">
-	<link href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:900,900"  rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Cambay" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	<link rel="stylesheet"
+					href="https://getbootstrap.com/docs/4.0/examples/navbar-top-fixed/navbar-top-fixed.css">
+	<link rel="stylesheet"
+					href="//necolas.github.io/normalize.css/7.0.0/normalize.css">
+	<link rel="stylesheet"
+					href="https://fonts.googleapis.com/css?family=Indie+Flower|Raleway:900,900"  >
+  <link rel="stylesheet"
+					href="https://fonts.googleapis.com/css?family=Cambay" >
+	<link rel="stylesheet"
+				href="https://fonts.googleapis.com/css?family=Roboto" >
+	<link rel="stylesheet"
+				href="https://fonts.googleapis.com/css?family=Lato" >
 	<link rel="stylesheet" type="text/css"
           href="{{url_for('static', filename='css/sticky-footer.css')}}">
 
@@ -88,6 +94,16 @@ function noshow() {
 {% block content %}
 
 	{% include 'includes/_messages.html' %}
+	{% if session.logged_in == True %}
+		<p>
+			<button type="button" class="btn btn-success float-right badge-pill">
+  							{{ session.name }} {% if pageName == 'dashboard' %}:
+								<span class="badge badge-light">{{ result }} Notes</span>{% endif %}
+			</button>
+			<br>
+		</p>
+		<br>
+	{% endif %}
 	{% block page_content %} {% endblock %}
 
 </div>

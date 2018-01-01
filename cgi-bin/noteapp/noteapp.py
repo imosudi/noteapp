@@ -116,6 +116,15 @@ def create_note():
     else:
         return render_template("create_note.html", form=form, pageName=pageName, current_time=datetime.utcnow())
 
+@app.route("/notes/preedit/<string:id>", methods=['GET', 'POST'])
+@is_logged_in
+def note_preedit(id):
+    pageName = "/notes/preedit"
+    username = session['username']
+    form = preEditNoteForm(request.form)
+    note_id = form.note_id.data
+    if request.method == "POST" and  form.validate() and id == note_id:
+        return redirect(url_for('note_edit', id=id ))
 
 
 # Edit notes
@@ -124,55 +133,78 @@ def create_note():
 def note_edit(id):
     pageName = "/notes/edit"
     username = session['username']
-    form = editNoteForm(request.form)
-    app.logger.info(id)
+    if request.referrer != None:
+        referrerurl = '/' + str((request.referrer).split('/')[-1])
+    else:
+        flash(u"There is no need to be that smart!", "warning")
+        return redirect(url_for('home'))
+    app.logger.info(request.referrer)
+    app.logger.info(referrerurl)
+    app.logger.info(url_for('dashboard'))
+    app.logger.info(url_for('home'))
+    if referrerurl == url_for('dashboard'):
+        app.logger.info('real request made')
+        form = editNoteForm(request.form)
+        #note_id = session['note_id']
+        #app.logger.info(id)
+        #app.logger.info(note_id)
+        #author = session['author']
+        #app.logger.info(author)
 
-    if request.method == "POST" and  form.validate():
-        title = form.title.data
-        body = form.body.data
-        username = session['username']
+        if request.method == "POST" and  form.validate() :
+            title = form.title.data
+            body = form.body.data
+            #author = form.author.data
+            #app.logger.info(author)
+            #username = session['username']
+            #app.logger.info(username)
 
-        # Creating cursor
-    	cur = mysql.connection.cursor()
+            # Creating cursor
+            cur = mysql.connection.cursor()
 
-    	cur.execute("UPDATE notes SET title=%s, body=%s, username=%s WHERE id = %s", (title, body, username, [id]) )
-        # I will remove the username because there is not need updating the username
+            cur.execute("UPDATE notes SET title=%s, body=%s, username=%s WHERE id = %s", (title, body, username, [id]) )
 
-    	# Commit to Database
-    	mysql.connection.commit()
+            # Commit to Database
+            mysql.connection.commit()
 
-    	#Close connection
-    	cur.close()
+            #Close connection
+            cur.close()
 
-    	flash(u"Note edited and saved", "success")
+            flash(u"Note edited and saved", "success")
 
-    	return redirect(url_for('dashboard'))
+            return redirect(url_for('dashboard'))
+
+
+        else:
+            # Creating cursor
+            cur = mysql.connection.cursor()
+
+            #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
+
+            cur.execute("SELECT * FROM notes WHERE id = %s", [id] )
+
+            note = cur.fetchall()
+
+            #app.logger.info(note)
+
+            # Commit to Database
+            mysql.connection.commit()
+
+            #Close connection
+            cur.close()
+
+            #app.logger.info(username)
+
+
+            #title = note['title']
+            #body = note['body']
+
+
+            return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
 
     else:
-        # Creating cursor
-        cur = mysql.connection.cursor()
-
-        #cur.execute("SELECT * FROM notes WHERE username = %s", [username] )
-
-        cur.execute("SELECT * FROM notes WHERE id = %s", [id] )
-
-        note = cur.fetchall()
-
-        app.logger.info(note)
-
-        # Commit to Database
-        mysql.connection.commit()
-
-        #Close connection
-        cur.close()
-
-        #app.logger.info(username)
-
-        #title = note['title']
-        #body = note['body']
-
-        return render_template("edit_note.html", form=form, pageName=pageName, note=note, id=id, current_time=datetime.utcnow())
-
+        flash(u"Note edited impossible", "warning")
+        return redirect(url_for(dashboard))
     """
     form = createNoteForm(request.form)
     """
@@ -183,25 +215,32 @@ def note_delete(id):
     pageName = "/notes/delete"
     username = session['username']
     form = deleteNoteForm(request.form)
-    note_id = form.note_id.data
-    app.logger.info(note_id)
-    app.logger.info(id)
-    if id == note_id:
-        cur = mysql.connection.cursor()
+    if request.method == "POST" and  form.validate():
+        note_id = form.note_id.data
+        app.logger.info(note_id)
+        app.logger.info(id)
+        if id == note_id:
+            cur = mysql.connection.cursor()
 
-        cur.execute("DELETE FROM notes WHERE id=%s", [id])
+            # Not safe
+            cur.execute("DELETE FROM notes WHERE id=%s", [id])
 
-	    # Commit to Database
-        mysql.connection.commit()
+            # safe
+            #noteDelInstruction = "DELETE FROM 'notes' WHERE id = ?"
+            #cur.execute(noteDelInstruction, [id])
 
-        #Close connection
-        cur.close()
+    	    # Commit to Database
+            mysql.connection.commit()
 
-        flash(u"Note Deleted !", "success")
+            #Close connection
+            cur.close()
 
-        return redirect(url_for('home'))
+            flash(u"Note Deleted !", "success")
+
+            return redirect(url_for('home'))
 
     return redirect(url_for('home'))
+
 
 
 
@@ -299,7 +338,7 @@ def dashboard():
 
     # Fetching session['username']
     username = session['username']
-    app.logger.info(username)
+    #app.logger.info(username)
 
 
     # Creating cursor
@@ -307,12 +346,21 @@ def dashboard():
 
     result = cur.execute("SELECT * FROM notes WHERE username = %s", [username])
     #result = cur.execute("SELECT * FROM notes ")
+    app.logger.info(result)
 
     notes = cur.fetchall()
 
+    #cur.execute("SELECT COUNT(*) FROM notes WHERE username = %s", [username])
+    #countresult=cur.fetchone()
+    #number_of_rows=countresult[0]
+    #rownum=dict.values()[0]
+    #app.logger.info(countresult)
+    #app.logger.info(number_of_rows)
+    #app.logger.info(rownum)
+
 
     if result > 0:
-        return render_template('dashboard.html', pageName=pageName, notes=notes, current_time=datetime.utcnow())
+        return render_template('dashboard.html', result=result, pageName=pageName, notes=notes, current_time=datetime.utcnow())
 
     else:
         msg = "No Notes Found"

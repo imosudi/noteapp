@@ -61,7 +61,10 @@ class createNoteForm(Form):
 class editNoteForm(Form):
     title = StringField('Title', [validators.Length(min=4, max=12)])
     body = StringField(u'Take a note', widget=TextArea())
-    username = HiddenField('username')
+    author = HiddenField('author')
 
 class deleteNoteForm(Form):
+    note_id = HiddenField('note_id')
+
+class preEditNoteForm(Form):
     note_id = HiddenField('note_id')
