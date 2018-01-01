@@ -38,6 +38,16 @@ class registrationForm(Form):
     accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
     #submit = SubmitField('Complete Registeration')
 
+    """
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError('Email already registered.')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError('Username already in use.')"""
+
 class loginForm(Form):
     username = StringField('Username', validators=[Required()])
     password = PasswordField('Login Password', validators=[Required()])
