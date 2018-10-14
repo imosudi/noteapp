@@ -10,3 +10,7 @@ git clone https://github.com/imosudi/noteapp.git
 
 cd noteapp
 
+virtualenv venv
+
+source venv/bin/activate
+
