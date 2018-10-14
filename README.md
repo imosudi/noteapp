@@ -19,3 +19,6 @@ virtualenv venv
 
 source venv/bin/activate
 
+pip install -r requirements.txt
+
+python cgi-bin/noteapp/noteapp.py
