@@ -13,6 +13,10 @@ CREATE USER 'c6noteapp'@'%' IDENTIFIED WITH mysql_native_password AS 'imosudi@gm
 
 CREATE TABLE `c6noteapp`.`users` ( `id` INT(50) NOT NULL AUTO_INCREMENT , `email` VARCHAR(150) NULL DEFAULT NULL , `name` VARCHAR(150) NULL DEFAULT NULL , `username` VARCHAR(150) NULL DEFAULT NULL , `password` VARCHAR(150) NULL DEFAULT NULL , INDEX (`id`)) ENGINE = InnoDB;
 
+
+CREATE TABLE `c6noteapp`.`notes` ( `id` INT NOT NULL , `title` VARCHAR(100) NULL DEFAULT NULL , `body` VARCHAR(450) NULL DEFAULT NULL , `username` VARCHAR(150) NULL DEFAULT NULL , INDEX (`id`)) ENGINE = InnoDB;
+
+
 cd noteapp
 
 virtualenv venv
