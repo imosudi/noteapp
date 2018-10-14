@@ -4,6 +4,6 @@ This is a simple note taking app, a simple style web application for taking quic
 
 http://noteapp.serverafrica.org
 
-sudo apt-get install python-dev
+sudo apt-get install python-dev build-essential -y
 
 
