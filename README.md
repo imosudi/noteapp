@@ -4,7 +4,7 @@ This is a simple style web application for taking quick notes that needs extra a
 
 http://noteapp.serverafrica.org
 
-sudo apt-get update & sudo apt-get upgrade -y && sudo apt-get install build-essential python-dev virtualenv libmysqlclient-dev -y
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install build-essential mysql-client mysql-server python-dev virtualenv libmysqlclient-dev -y
 
 git clone https://github.com/imosudi/noteapp.git
 
