@@ -17,11 +17,14 @@ sudo mysql --user=root mysql
 
 mysql> 
 update user set authentication_string=PASSWORD(''DESIRED-ROOT-password') where user='root';
+
 flush privileges; 
+
 quit;
+
 sudo service mysql restart
 
-sudo mysql -user root -p
+sudo mysql -u root -p
 
 CREATE DATABASE c6noteapp;
 
