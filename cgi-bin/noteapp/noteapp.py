@@ -40,7 +40,8 @@ admin = Admin(app)
 #Config MySQL
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'c6noteapp'
-app.config['MYSQL_PASSWORD'] = 'imosudi@gmail.com'
+#app.config['MYSQL_PASSWORD'] = 'imosudi@gmail.com'
+app.config['MYSQL_PASSWORD'] = 'PASSWimosudi@gmail.co767868FFGFFDD#m'
 app.config['MYSQL_DB'] = 'c6noteapp'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
