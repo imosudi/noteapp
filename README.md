@@ -8,14 +8,20 @@ sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install build-ess
 
 git clone https://github.com/imosudi/noteapp.git
 
-sudo mysqld_safe --skip-grant-tables&
-sudo mysql --user=root mysql
-mysql> update user set authentication_string=PASSWORD('DESIRED-ROOT-password') where user='root';
-flush privileges;
-quit
-sudo service mysql restart
-sudo mysql -u root -p
 
+sudo mysqld_safe --skip-grant-tables& 
+sudo mysql --user=root mysql 
+#
+##WAIT FOR THE MYSQL PROMPT 
+#
+
+mysql> 
+update user set authentication_string=PASSWORD(''DESIRED-ROOT-password') where user='root';
+flush privileges; 
+quit;
+sudo service mysql restart
+
+sudo mysql -user root -p
 
 CREATE DATABASE c6noteapp;
 
@@ -27,8 +33,10 @@ CREATE TABLE c6noteapp.users ( id INT(50) NOT NULL AUTO_INCREMENT , email VARCHA
 
 CREATE TABLE c6noteapp.notes ( id INT(50) NOT NULL AUTO_INCREMENT , title VARCHAR(100) NULL DEFAULT NULL , body VARCHAR(450) NULL DEFAULT NULL , username VARCHAR(150) NULL DEFAULT NULL , INDEX (id)) ENGINE = InnoDB;
 
-flush privileges;
+FLUSH PRIVILEGES;
+
 quit;
+
 
 cd noteapp
 
@@ -39,3 +47,4 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 python cgi-bin/noteapp/noteapp.py
+
